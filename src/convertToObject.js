@@ -15,9 +15,18 @@ function convertToObject(sourceString) {
     .map((declaration) => declaration.trim())
     .filter((declaration) => declaration.includes(':'))
     .reduce((styleObject, declaration) => {
-      const [key, value] = declaration.split(':').map((part) => part.trim());
+      const colonIndex = declaration.indexOf(':');
 
-      styleObject[key] = value;
+      if (colonIndex === false) {
+        return styleObject;
+      }
+
+      const key = declaration.slice(0, colonIndex).trim();
+      const value = declaration.slice(colonIndex + 1).trim();
+
+      if (key && value) {
+        styleObject[key] = value;
+      }
 
       return styleObject;
     }, {});
